@@ -2,6 +2,7 @@ import get from "lodash/get";
 
 const mutationHandler = function(mutationFn, mutationName, validDataCallback, invalidDataCallback, errorCallback) {
   // Note: mutationFn should bind the arguments needed
+  console.log("mutationHandler:", mutationName);
   typeof mutationFn === 'function' && mutationFn().then((response) => {
     if(!get(response, `data.${mutationName}`) || get(response, "data.error") || get(response, "errors")) {
       console.error('invalid response', response);

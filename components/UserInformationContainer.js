@@ -6,9 +6,12 @@ import UserInformation from './UserInformation';
 
 let query = gql`query { clicks }`;
 
+let queryName = gql`query { name }`;
+
 let mutation = gql`mutation { onClick }`;
 
 export default compose (
-  graphql(query),
-  graphql(mutation, {name: 'onClick'})
+  graphql(query, {name: 'data'}),
+  graphql(mutation, {name: 'onClick'}),
+  graphql(queryName, {name: 'queryName'})
 )(UserInformation);
