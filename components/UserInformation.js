@@ -8,6 +8,7 @@ export default class UserInformation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: "No Name",
       clicks: props.data ? props.data.clicks : 0
     };
   }
@@ -25,6 +26,13 @@ export default class UserInformation extends Component {
     } else {
       console.warn("no onClick function!");
     }
+  }
+
+  onQueryName = () => {
+    // mutationHandler(this.props.queryName, "name", (data) => {
+    //   console.log("query name:", data);
+    // });
+    console.log("onQueryName");
   }
 
   componentWillReceiveProps(nextProps, nextState) {
@@ -47,6 +55,7 @@ export default class UserInformation extends Component {
                    Clicked {clicks} times.
                 </Text>
                 <Button onPress={this.onClick}><Text>Click</Text></Button>
+                <Button onPress={this.onQueryName}><Text>{this.state.name}</Text></Button>
               </Body>
             </CardItem>
           </Card>
