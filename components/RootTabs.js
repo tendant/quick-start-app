@@ -6,12 +6,13 @@ import CameraRecord from './CameraRecord';
 
 export default class RootTabs extends Component {
   render() {
+    const {navigation} = this.props;
     return (
       <Container>
         <Header hasTabs/>
         <Tabs tabBarPosition="bottom" >
           <Tab heading={ <TabHeading><Icon name="camera" /><Text>Camera</Text></TabHeading>}>
-            <CameraRecord />
+            <CameraRecord navigation={navigation} />
           </Tab>
           <Tab heading={ <TabHeading><Text>User</Text></TabHeading>}>
             <UserInformationContainer />

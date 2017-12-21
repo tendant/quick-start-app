@@ -9,7 +9,7 @@ import { onError } from 'apollo-link-error';
 import { View } from 'react-native';
 
 import UserInformationContainer from './UserInformationContainer';
-import RootTabs from './RootTabs';
+import RootNavigation from './RootNavigation';
 
 export default class RootApolloProvider extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ export default class RootApolloProvider extends Component {
     return (
           <Root >
             <ApolloProvider client={this.state.client}>
-              <RootTabs />
+              <RootNavigation />
             </ApolloProvider>
           </Root>
     );
