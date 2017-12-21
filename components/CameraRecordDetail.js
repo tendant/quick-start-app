@@ -1,33 +1,81 @@
 import React, { Component } from 'react';
-import { ListView } from 'react-native';
-import { Container, Header, Content, Button, Icon, List, ListItem, Text, SwipeRow, Left, Title, Body, Right } from 'native-base';
+import { Dimensions, View } from 'react-native';
+import { Container, Header, Content, Button, Icon, List, ListItem, Text, SwipeRow, Left, Title, Body, Right, Separator } from 'native-base';
+import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
+
+var dp = new DataProvider((r1, r2) => {return r1 !== r2;});
 const datas = [
-  'Simon Mignolet',
-  'Nathaniel Clyne',
-  'Dejan Lovren',
-  'Mama Sakho',
-  'Alberto Moreno',
-  'Emre Can',
-  'Joe Allen',
-  'Phil Coutinho',
+  'GH5',
+  'A7RIII',
+  '7D II',
+  'D850',
+  'A6300',
+  'A6500',
+  'X100f',
+  'XT2',
 ];
 export default class CameraRecordDetail extends Component {
   constructor(props) {
     super(props);
-    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      basic: true,
-      listViewData: datas,
+      dataProvider: dp.cloneWithRows(datas)
     };
+    this._layoutProvider = new LayoutProvider((i) => {
+                              let d = this.state.dataProvider.getDataForIndex(i);
+                              return "CAMERA";
+                            }, (type, dim) => {
+                              const {width} = Dimensions.get("window");
+                              switch (type) {
+                                case "CAMERA":
+                                  dim.width = width;
+					                        dim.height = 50;
+                                  break;
+                                default:
+                                  dim.width = width;
+                                  dim.height = 0;
+                              }
+                            });
   }
-  deleteRow(secId, rowId, rowMap) {
-    rowMap[`${secId}${rowId}`].props.closeRow();
-    const newData = [...this.state.listViewData];
-    newData.splice(rowId, 1);
-    this.setState({ listViewData: newData });
+
+  // deleteRow(secId, rowId, rowMap) {
+  //   rowMap[`${secId}${rowId}`].props.closeRow();
+  //   const newData = [...this.state.listViewData];
+  //   newData.splice(rowId, 1);
+  //   this.setState({ listViewData: newData });
+  // }
+
+  _renderRow = (type, data, index) => {
+    switch (type) {
+      case "CAMERA":
+        return (
+          <SwipeRow
+            leftOpenValue={75}
+            rightOpenValue={-75}
+            left={
+              <Button success onPress={() => alert('Add')}>
+                <Icon active name="add" />
+              </Button>
+            }
+            body={
+              <Body >
+                <ListItem button onPress={() => alert(`${data}`)} >
+                  <Text>{data}</Text>
+                </ListItem>
+              </Body>
+            }
+            right={
+              <Button danger onPress={() => alert('Trash')}>
+                <Icon active name="trash" />
+              </Button>
+            }
+          />
+        )
+      default:
+        return (<Text >no data</Text>)
+    }
   }
+
   render() {
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       <Container>
         <Header>
@@ -37,29 +85,17 @@ export default class CameraRecordDetail extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Camera Detail</Title>
+            <Title>Camera List</Title>
           </Body>
           <Right />
         </Header>
-        <Content>
-          <List
-            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
-            renderRow={data =>
-              <ListItem>
-                <Text> {data} </Text>
-              </ListItem>}
-            renderLeftHiddenRow={data =>
-              <Button full onPress={() => alert(data)}>
-                <Icon active name="information-circle" />
-              </Button>}
-            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
-              <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
-                <Icon active name="trash" />
-              </Button>}
-            leftOpenValue={75}
-            rightOpenValue={-75}
+        <View style={{flex: 1}} >
+    			<RecyclerListView rowRenderer={this._renderRow}
+    												dataProvider={this.state.dataProvider}
+                            layoutProvider={this._layoutProvider}
+                            disableRecycling={false}
           />
-        </Content>
+    		</View>
       </Container>
     );
   }

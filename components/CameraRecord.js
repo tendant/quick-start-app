@@ -30,7 +30,7 @@ export default class CameraRecord extends Component {
           <Card>
             <CardItem>
               <Body>
-                <Button onPress={this.onCameraDetail}><Text>Camera is here</Text></Button>
+                <Button onPress={this.onCameraDetail}><Text>View Cameras</Text></Button>
               </Body>
             </CardItem>
           </Card>
