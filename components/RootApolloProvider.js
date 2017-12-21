@@ -22,7 +22,7 @@ export default class RootApolloProvider extends Component {
 
   createClient = () => {
     const httpLink = new HttpLink({
-      uri: 'http://localhost:3000/graphql'
+      uri: 'http://localhost:3002/graphql'
     });
 
     const client = new ApolloClient({

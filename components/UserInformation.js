@@ -29,15 +29,22 @@ export default class UserInformation extends Component {
   }
 
   onQueryName = () => {
-    console.log("onQueryName", this.props.queryName);
+    console.log("onQueryName", this.props.data);
 
-    this.props.queryName.refetch().then((response) => {
-      if (response.data.name){
-        this.setState({name:response.data.name});
-      } else {
-        console.warn("cannot get name from server");
+    this.props.data.refetch().then((data) => {
+      console.log("refertch data:", data);
+      if(data.name) {
+        this.setState({name: data.name});
       }
     });
+  }
+
+  componentWillReceiveProps(nextProps, nextState) {
+    console.log("nextProps", nextProps);
+    if (nextProps.data) {
+      const {clicks, name} = nextProps.data;
+      this.setState({clicks, name});
+    }
   }
 
   render() {

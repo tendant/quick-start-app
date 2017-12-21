@@ -4,14 +4,18 @@ import gql from 'graphql-tag';
 
 import UserInformation from './UserInformation';
 
-let query = gql`query { clicks }`;
-
-let queryName = gql`query { name }`;
+let query = gql`query {
+  clicks
+  name
+}`;
 
 let mutation = gql`mutation { onClick }`;
 
 export default compose (
   graphql(query, {name: 'data'}),
-  graphql(mutation, {name: 'onClick'}),
-  graphql(queryName, {name: 'queryName'})
+  graphql(mutation, {name: 'onClick'})
 )(UserInformation);
+
+//TODO(yangye):
+// 1. Add query handler
+// 2. Add fetchMore
