@@ -1,16 +1,33 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Card, CardItem, Body, Text, Button, Left, Icon, Title, Right } from 'native-base';
-
-import {mutationHandler} from '../utils/graphql';
-
+import { ListView } from 'react-native';
+import { Container, Header, Content, Button, Icon, List, ListItem, Text, SwipeRow, Left, Title, Body, Right } from 'native-base';
+const datas = [
+  'Simon Mignolet',
+  'Nathaniel Clyne',
+  'Dejan Lovren',
+  'Mama Sakho',
+  'Alberto Moreno',
+  'Emre Can',
+  'Joe Allen',
+  'Phil Coutinho',
+];
 export default class CameraRecordDetail extends Component {
-
   constructor(props) {
     super(props);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.state = {
+      basic: true,
+      listViewData: datas,
+    };
   }
-
-
+  deleteRow(secId, rowId, rowMap) {
+    rowMap[`${secId}${rowId}`].props.closeRow();
+    const newData = [...this.state.listViewData];
+    newData.splice(rowId, 1);
+    this.setState({ listViewData: newData });
+  }
   render() {
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     return (
       <Container>
         <Header>
@@ -25,15 +42,23 @@ export default class CameraRecordDetail extends Component {
           <Right />
         </Header>
         <Content>
-          <Card>
-            <CardItem>
-              <Body>
-                <Text>
-                   {this.props.cameraType}
-                </Text>
-              </Body>
-            </CardItem>
-          </Card>
+          <List
+            dataSource={this.ds.cloneWithRows(this.state.listViewData)}
+            renderRow={data =>
+              <ListItem>
+                <Text> {data} </Text>
+              </ListItem>}
+            renderLeftHiddenRow={data =>
+              <Button full onPress={() => alert(data)}>
+                <Icon active name="information-circle" />
+              </Button>}
+            renderRightHiddenRow={(data, secId, rowId, rowMap) =>
+              <Button full danger onPress={_ => this.deleteRow(secId, rowId, rowMap)}>
+                <Icon active name="trash" />
+              </Button>}
+            leftOpenValue={75}
+            rightOpenValue={-75}
+          />
         </Content>
       </Container>
     );
