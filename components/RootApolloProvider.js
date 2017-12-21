@@ -8,7 +8,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from 'apollo-link-error';
 import { View } from 'react-native';
 
-import UserInformation from './UserInformation';
+import UserInformationContainer from './UserInformationContainer';
 
 
 export default class RootApolloProvider extends Component {
@@ -41,7 +41,7 @@ export default class RootApolloProvider extends Component {
     return (
           <Root >
             <ApolloProvider client={this.state.client}>
-              <UserInformation />
+              <UserInformationContainer />
             </ApolloProvider>
           </Root>
     );
