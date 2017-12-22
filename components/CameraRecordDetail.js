@@ -21,7 +21,7 @@ export default class CameraRecordDetail extends Component {
                               switch (type) {
                                 case "CAMERA":
                                   dim.width = width;
-					                        dim.height = 50;
+					                        dim.height = 100;
                                   break;
                                 default:
                                   dim.width = width;
@@ -95,6 +95,8 @@ export default class CameraRecordDetail extends Component {
     												dataProvider={this.state.dataProvider}
                             layoutProvider={this._layoutProvider}
                             disableRecycling={false}
+                            onEndReached={this.props.fetchMoreCameras}
+                            onEndReachedThreshold={0.5}
           />
     		</View>
       </Container>
