@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
+import get from 'lodash/get';
 import { Dimensions, View } from 'react-native';
 import { Container, Header, Content, Button, Icon, List, ListItem, Text, SwipeRow, Left, Title, Body, Right, Separator } from 'native-base';
 import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
 
 var dp = new DataProvider((r1, r2) => {return r1 !== r2;});
-const datas = [
-  'GH5',
-  'A7RIII',
-  '7D II',
-  'D850',
-  'A6300',
-  'A6500',
-  'X100f',
-  'XT2',
-];
+
 export default class CameraRecordDetail extends Component {
   constructor(props) {
     super(props);
+    const cameraData = !!props.cameraData ? props.cameraData : [];
     this.state = {
-      dataProvider: dp.cloneWithRows(datas)
+      dataProvider: dp.cloneWithRows(cameraData)
     };
     this._layoutProvider = new LayoutProvider((i) => {
                               let d = this.state.dataProvider.getDataForIndex(i);
@@ -35,6 +28,14 @@ export default class CameraRecordDetail extends Component {
                                   dim.height = 0;
                               }
                             });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(get(nextProps, "cameraData.length") !== get(this.props, "cameraData.length")) {
+      this.setState({
+        dataProvider: dp.cloneWithRows(nextProps.cameraData)
+      })
+    }
   }
 
   // deleteRow(secId, rowId, rowMap) {
@@ -59,7 +60,7 @@ export default class CameraRecordDetail extends Component {
             body={
               <Body >
                 <ListItem button onPress={() => alert(`${data}`)} >
-                  <Text>{data}</Text>
+                  <Text>{get(data, "name", "N/A")}</Text>
                 </ListItem>
               </Body>
             }

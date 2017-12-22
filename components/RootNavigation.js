@@ -2,7 +2,7 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import RootTabs from './RootTabs';
-import CameraRecordDetail from './CameraRecordDetail';
+import CameraRecordDetailContainer from './CameraRecordDetailContainer';
 
 const RootNavigation = StackNavigator({
   Home: {
@@ -17,7 +17,7 @@ const RootNavigation = StackNavigator({
   CameraRecordDetail:{
     screen: (props) => {
       const {screenProps, navigation} = props;
-      return (<CameraRecordDetail
+      return (<CameraRecordDetailContainer
                 {...screenProps}
                 {...navigation.state.params}
                 navigation={navigation} />);
